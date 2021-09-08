@@ -213,7 +213,7 @@ public:
 	{
 	}
 
-	ReversedRandomAccessIterator(const ReversedRandomAccessIterator& copy) : _iter(copy.iter)
+	ReversedRandomAccessIterator(const ReversedRandomAccessIterator& copy) : _iter(copy._iter)
 	{
 	}
 

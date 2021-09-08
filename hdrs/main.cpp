@@ -1,54 +1,43 @@
 #include "Vector.hpp"
 // #include <map>
 // #include <iterator>
-// #include <vector>
+#include <vector>
+#include <string>
 
-
-class A
+template <template <typename T, class _allocator = std::allocator<T> >  class vec>
+void	test(std::string filename)
 {
-private:
-public:
-	int	k;
-	A();
-	A(const A& copy);
-	~A();
+	std::vector<int>	nums;
+	vec<int>			tested;
+
+	for (int i = 0; i < 5; i++)
+	{
+		nums.push_back(i);
+	}
+
+	for (int i = 0; i < nums.size(); i++)
+	{
+		tested.push_back(nums[i]);
+	}
+	for (typename vec<int>::iterator iter = tested.begin(); iter != tested.end(); iter++)
+	{
+		std::cout << *iter << " ";
+	}
+	std::cout << std::endl;
 	
-	A&	operator=(const A& copy);
-};
+	for (typename vec<int>::reverse_iterator iter = tested.rbegin(); iter != tested.rend(); iter++)
+	{
+		std::cout << *iter << " ";
+	}
 
-A::A()
-{
-	std::cout << "ha" << std::endl;
-	this->k = 6;
+	for (typename vec<int>::const_iterator iter = tested.rbegin(); iter != tested.rend(); iter++)
+	{
+		std::cout << *iter << " ";
+	}
+	std::cout << std::endl;
 }
-
-A::A(const A& copy)
-{
-	this->k = 6;
-}
-
-A::~A()
-{
-	std::cout << "destr" << std::endl;
-}
-
-A&	A::operator=(const A& copy)
-{
-	if (this == &copy)
-		return (*this);
-	std::cout  << "he" << std::endl;
-
-}
-
-
 
 int	main()
 {
-	ft::Vector<A>	asd;
-
-	for (int i = 0; i < 100; i++)
-	{
-		asd.push_back(A());
-	}
-	std::cout << "HERE_____________________\n";
+	test<ft::Vector>(std::string("my_test"));
 }

@@ -23,10 +23,14 @@ private:
 	// typedef typename Alloc::const_reference	const_reference;
 	// typedef typename Alloc::reference 		reference;
 public:
-	typedef RandomAccessIterator<T>
+	typedef RandomAccessIterator<T, pointer, reference>
 		iterator;
 	typedef RandomAccessIterator<T, const_pointer, const_reference>
 		const_iterator;
+	typedef ReversedRandomAccessIterator<T, pointer, reference>
+		reverse_iterator;
+	typedef ReversedRandomAccessIterator<T, const_pointer, const_reference>
+		const_reverse_iterator;
 
 private:
 	Alloc	_allocator;
@@ -82,6 +86,25 @@ public:
 	const_iterator	end() const
 	{
 		return (this->_end);
+	}
+
+
+	reverse_iterator	rbegin()
+	{
+		return (this->_last);
+	}
+	reverse_iterator	rend()
+	{
+		return (this->_begin - 1);
+	}
+
+	const_reverse_iterator	rbegin()	const
+	{
+		return (this->_last);
+	}
+	const_reverse_iterator	rend()		const
+	{
+		return (this->_begin - 1);
 	}
 
 	reference	operator[](size_t index)
