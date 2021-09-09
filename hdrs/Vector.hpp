@@ -8,7 +8,7 @@
 namespace ft
 {
 template <class T, class Alloc = std::allocator<T> >
-class Vector
+class vector
 {
 private:
 	typedef typename Alloc::const_pointer	const_pointer;
@@ -81,11 +81,11 @@ public:
 
 	const_iterator	begin() const
 	{
-		return (this->_begin);
+		return (const_iterator(this->_begin));
 	}
 	const_iterator	end() const
 	{
-		return (this->_end);
+		return (const_iterator(this->_end));
 	}
 
 
@@ -115,18 +115,20 @@ public:
 
 	/* CONSTRUCTORS */
 
-	Vector()
+	
+	vector()
 		:  _allocator(Alloc()), _begin(), _end(), _last(), _size(), _capacity()
 	{
 	}
 
-	explicit Vector( const Alloc& alloc )
+	explicit 
+	vector( const Alloc& alloc )
 		:_allocator(alloc), _begin(), _end(), _last(), _size(), _capacity()
 	{
 
 	}
 
-	Vector( const Vector& copy )
+	vector( const vector& copy )
 		:  _allocator(copy._allocator), _size(copy._size), _capacity(copy._capacity)
 	{
 		this->_begin = this->_allocator.allocate(_capacity);
@@ -140,7 +142,7 @@ public:
 		}
 	}
 	
-	~Vector()
+	~vector()
 	{
 		for (iterator i1 = this->begin(); i1 != this->end(); i1++)
 		{
@@ -148,8 +150,9 @@ public:
 		}
 		this->_allocator.deallocate(this->_begin, this->_capacity);
 	}
-	
-	Vector&	operator=( const Vector& copy )
+
+
+	vector&	operator=( const vector& copy )
 	{
 		if (this == &copy)
 			return (*this);
@@ -192,25 +195,25 @@ public:
 };
 
 // template <class T>
-// Vector<T>::Vector()
+// vector<T>::vector()
 // {
 
 // }
 
 // template <class T>
-// Vector<T>::Vector(const Vector& copy)
+// vector<T>::vector(const vector& copy)
 // {
 
 // }
 
 // template <class T>
-// Vector<T>::~Vector()
+// vector<T>::~vector()
 // {
 
 // }
 
 // template <class T>
-// Vector<T>&	Vector<T>::operator=(const Vector& copy)
+// vector<T>&	vector<T>::operator=(const vector& copy)
 // {
 // 	if (this == &copy)
 // 		return (*this);

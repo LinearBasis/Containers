@@ -11,7 +11,7 @@ struct BidirectionalIteratorTag : public ForwardIteratorTag {};
 struct RandomAccessIteratorTag : public BidirectionalIteratorTag {};
 
 template <class Iter,
-	class IterCategory = ErrorIteratorTag> struct IteratorTraits
+	class IterCategory = ErrorIteratorTag> struct iterator_traits
 {
 	typedef typename Iter::difference_type		difference_type;
 	typedef typename Iter::value_type			value_type;
@@ -20,7 +20,7 @@ template <class Iter,
 	typedef typename Iter::iterator_category	iterator_category;
 };
 
-template <class T> struct IteratorTraits<T*>
+template <class T> struct iterator_traits<T*>
 {
 	typedef ptrdiff_t				difference_type ;
 	typedef T						value_type;
@@ -29,7 +29,7 @@ template <class T> struct IteratorTraits<T*>
 	typedef ErrorIteratorTag		iterator_category;
 };
 
-template <class T> struct IteratorTraits<const T*>
+template <class T> struct iterator_traits<const T*>
 {
 	typedef ptrdiff_t				difference_type ;
 	typedef T						value_type;

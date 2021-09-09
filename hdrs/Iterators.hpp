@@ -61,6 +61,11 @@ public:
 		return (*this);
 	}
 
+	operator RandomAccessIterator<T, const T*, const T&>()
+	{
+		return RandomAccessIterator<T, const T*, const T&>(_curr);
+	}
+
 	RandomAccessIterator&	operator++(void)
 	{
 		++this->_curr;
@@ -69,7 +74,7 @@ public:
 
 	RandomAccessIterator	operator++(int)
 	{
-		RandomAccessIterator<T>	ret(*this);
+		RandomAccessIterator	ret(*this);
 
 		++this->_curr;
 		return (ret);

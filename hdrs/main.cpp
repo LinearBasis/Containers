@@ -30,7 +30,8 @@ void	test(std::string filename)
 		std::cout << *iter << " ";
 	}
 
-	for (typename vec<int>::const_iterator iter = tested.rbegin(); iter != tested.rend(); iter++)
+	std::cout << std::endl;
+	for (typename vec<int>::const_iterator iter = tested.begin(); iter != tested.end(); iter++)
 	{
 		std::cout << *iter << " ";
 	}
@@ -39,5 +40,7 @@ void	test(std::string filename)
 
 int	main()
 {
-	test<ft::Vector>(std::string("my_test"));
+	test<ft::vector>(std::string("my_test"));
+
+	// ft::IteratorTraits<ft::Vector<int>::const_iterator>
 }
