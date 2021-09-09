@@ -27,10 +27,9 @@ public:
 		iterator;
 	typedef RandomAccessIterator<T, const_pointer, const_reference>
 		const_iterator;
-	typedef ReversedRandomAccessIterator<T, pointer, reference>
-		reverse_iterator;
-	typedef ReversedRandomAccessIterator<T, const_pointer, const_reference>
-		const_reverse_iterator;
+
+	typedef ft::reverse_iterator<iterator> reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 private:
 	Alloc	_allocator;
@@ -55,7 +54,7 @@ private:
 		pointer	tmp;
 		pointer	tmp_last;
 
-		tmp = this->_allocator.allocate(this->_capacity );
+		tmp = this->_allocator.allocate(this->_capacity);
 		tmp_last = tmp;
 		for (int i = 0; i < this->_size; i++)
 		{
@@ -63,7 +62,8 @@ private:
 			this->_allocator.destroy(&this->_begin[i]);
 			++tmp_last;
 		}
-		this->_allocator.deallocate(this->_begin, begin_capacity);
+		if (this->_begin)
+			this->_allocator.deallocate(this->_begin, begin_capacity);
 		this->_begin = tmp;
 		this->_last = tmp_last;
 		this->_end = tmp + this->_size;
@@ -107,12 +107,14 @@ public:
 		return (this->_begin - 1);
 	}
 
-	reference	operator[](size_t index)
+	reference		operator[](size_t index)
 	{
 		return (this->_begin[index]);
 	}
-
-
+	const_reference	operator[](size_t index) const
+	{
+		return (this->_begin[index]);
+	}
 	/* CONSTRUCTORS */
 
 	
@@ -127,6 +129,24 @@ public:
 	{
 
 	}
+
+	explicit vector( size_t count,
+		 const T& value = T(),
+		 const Alloc& alloc = Alloc() )
+		 	: _allocator(alloc), _size(0), _capacity(0), _begin(), _end(), _last()
+	{
+		_realloc(count);
+		for (size_t i = 0; i < count; i++)
+		{
+			std::allocator<int>	allocat;
+			// allocat.construct(this->_last, value);
+			this->_allocator.construct(this->_last, value);
+			++this->_last;
+		}
+		this->_end = this->_last;
+		--this->_last;
+	}
+
 
 	vector( const vector& copy )
 		:  _allocator(copy._allocator), _size(copy._size), _capacity(copy._capacity)
@@ -167,6 +187,7 @@ public:
 		for (int i = 0; i < this->_size; i++)
 		{
 			this->_allocator.construct(this->_last, copy[i]);
+			this->_last++;
 		}
 	}
 

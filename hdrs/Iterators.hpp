@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include "IteratorTraits.hpp"
-
+#include <stack>
 namespace ft
 {
 
@@ -27,12 +27,14 @@ struct iterator
 template <class T, class P = T*, class R = T&, class diff = ptrdiff_t>
 class RandomAccessIterator : public iterator<T, RandomAccessIteratorTag>
 {
+public:
 	typedef P pointer;
 	typedef R reference;
 	typedef diff difference_type;
 private:
 	pointer	_curr;
 public:
+	
 	RandomAccessIterator()
 	{
 		this->_curr = nullptr;
@@ -43,7 +45,7 @@ public:
 		this->_curr = p;
 	}
 
-	RandomAccessIterator(const RandomAccessIterator& copy)
+	RandomAccessIterator(const RandomAccessIterator<T, P, R, diff>& copy)
 	{
 		this->_curr = copy._curr;
 	}
@@ -201,32 +203,42 @@ RandomAccessIterator<T>	operator-(int n, const RandomAccessIterator<T>& iter)
 }
 //___________________________________________________
 
-template <class T, class P = T*, class R = T&, class diff = ptrdiff_t>
-class ReversedRandomAccessIterator : public iterator<T, RandomAccessIteratorTag>
+
+template <class iter>
+class reverse_iterator
+	: public iterator<typename ft::iterator_traits<iter>::value_type, typename ft::iterator_traits<iter>::iterator_category>
 {
-	typedef P pointer;
-	typedef R reference;
-	typedef diff difference_type;
+	typedef typename iterator_traits<iter>::pointer pointer;
+	typedef typename iterator_traits<iter>::reference reference;
+	typedef typename iterator_traits<iter>::difference_type difference_type;
 private:
-	RandomAccessIterator<T>	_iter;
+	iter	_iter;
 public:
-	ReversedRandomAccessIterator() : _iter(nullptr)
+	iter	base()
+	{
+		iter	ans(_iter);
+		ans++;
+		return (ans);
+	}
+
+	reverse_iterator() : _iter(nullptr)
 	{
 	}
 
-	ReversedRandomAccessIterator(pointer p) : _iter(p)
+	reverse_iterator(pointer p) : _iter(p)
 	{
 	}
 
-	ReversedRandomAccessIterator(const ReversedRandomAccessIterator& copy) : _iter(copy._iter)
+	template <class U>
+		reverse_iterator(const reverse_iterator<U>& copy) : _iter(copy.base())
 	{
 	}
 
-	~ReversedRandomAccessIterator()
+	~reverse_iterator()
 	{
 	}
 
-	ReversedRandomAccessIterator&	operator=(const ReversedRandomAccessIterator& copy)
+	reverse_iterator&	operator=(const reverse_iterator& copy)
 	{
 		if (this == &copy)
 			return (*this);
@@ -234,15 +246,15 @@ public:
 		return (*this);
 	}
 
-	ReversedRandomAccessIterator&	operator++(void)
+	reverse_iterator&	operator++(void)
 	{
 		--_iter;
 		return (*this);
 	}
 
-	ReversedRandomAccessIterator	operator++(int)
+	reverse_iterator	operator++(int)
 	{
-		ReversedRandomAccessIterator<T>	ret(*this);
+		reverse_iterator	ret(*this);
 
 		--_iter;
 		return (ret);
@@ -253,14 +265,14 @@ public:
 		return (*(this->_iter));
 	}
 
-	bool					operator==(const ReversedRandomAccessIterator& iter) const
+	bool					operator==(const reverse_iterator& right) const
 	{
-		return (this->_iter == iter._iter);
+		return (this->_iter == right._iter);
 	}
 
-	bool					operator!=(const ReversedRandomAccessIterator& iter) const
+	bool					operator!=(const reverse_iterator& right) const
 	{
-		return (this->_iter != iter._iter);
+		return (this->_iter != right._iter);
 	}
 
 	pointer					operator->()
@@ -268,101 +280,101 @@ public:
 		return (this->_iter->_curr);
 	}
 
-	ReversedRandomAccessIterator&	operator--(void)
+	reverse_iterator&	operator--(void)
 	{
 		++_iter;
 		return (*this);
 	}
 
-	ReversedRandomAccessIterator<T>	operator--(int)
+	reverse_iterator	operator--(int)
 	{
-		ReversedRandomAccessIterator<T>	ret(*this);
+		reverse_iterator	ret(*this);
 
 		++_iter;
 		return (ret);
 	}
 
-	bool					operator>(const ReversedRandomAccessIterator& iter) const
+	bool					operator>(const reverse_iterator& right) const
 	{
-		return (this->_iter > iter._iter);
+		return (this->_iter > right._iter);
 	}
 
-	bool					operator<(const ReversedRandomAccessIterator& iter) const
+	bool					operator<(const reverse_iterator& right) const
 	{
-		return (this->_iter < iter._iter);
+		return (this->_iter < right._iter);
 	}
 
-	bool					operator>=(const ReversedRandomAccessIterator& iter) const
+	bool					operator>=(const reverse_iterator& right) const
 	{
-		return (this->_iter >= iter._iter);
+		return (this->_iter >= right._iter);
 	}
 
-	bool					operator<=(const ReversedRandomAccessIterator& iter) const
+	bool					operator<=(const reverse_iterator& right) const
 	{
-		return (this->_iter <= iter._iter);
+		return (this->_iter <= right._iter);
 	}
 
-	ReversedRandomAccessIterator<T>&	operator+=(int n)
+	reverse_iterator&	operator+=(int n)
 	{
 		this->_iter -= n;
 		return (*this);
 	}
 
-	ReversedRandomAccessIterator		operator+(int n) const
+	reverse_iterator		operator+(int n) const
 	{
-		ReversedRandomAccessIterator<T>	ret(*this);
+		reverse_iterator	ret(*this);
 
 		ret += n;
 		return (ret);
 	}
 
-	ReversedRandomAccessIterator&	operator-=(int n)
+	reverse_iterator&	operator-=(int n)
 	{
 		this->_iter += n;
 		return (*this);
 	}
 
-	ReversedRandomAccessIterator	operator-(int n)
+	reverse_iterator	operator-(int n)
 	{
-		ReversedRandomAccessIterator<T>	ret(*this);
+		reverse_iterator	ret(*this);
 
 		ret -= n;
 		return (ret);
 	}
 
-	difference_type	operator-(const ReversedRandomAccessIterator<T>& iter)
+	difference_type	operator-(const reverse_iterator& right)
 	{
-		return (std::distance(iter._iter, this->iter));
+		return (std::distance(right._iter, this->iter));
 	}
 
 	reference				operator[](int n)
 	{
-		ReversedRandomAccessIterator<T>	ret(*this);
+		reverse_iterator	ret(*this);
 
 		ret -= n;
 		return (*ret);
 	}
 
 	friend
-	ReversedRandomAccessIterator<T>		operator+(int n, const ReversedRandomAccessIterator<T>& iter);
+	reverse_iterator		operator+(int n, const reverse_iterator& right);
 	friend
-	ReversedRandomAccessIterator<T>		operator-(int n, const ReversedRandomAccessIterator<T>& iter);
+	reverse_iterator		operator-(int n, const reverse_iterator& right);
 };
 
 
 template <class T>
-ReversedRandomAccessIterator<T>	operator+(int n, const ReversedRandomAccessIterator<T>& iter)
+reverse_iterator<T>	operator+(int n, const reverse_iterator<T>& right)
 {
-	ReversedRandomAccessIterator<T>	ret(iter);
+	reverse_iterator<T>	ret(right);
 
 	ret += n;
 	return (ret);
 }
 
 template <class T>
-ReversedRandomAccessIterator<T>	operator-(int n, const ReversedRandomAccessIterator<T>& iter)
+reverse_iterator<T>	operator-(int n, const reverse_iterator<T>& right)
 {
-	ReversedRandomAccessIterator<T>	ret(iter);
+	reverse_iterator<T>	ret(right);
 
 	ret -= n;
 	return (ret);
