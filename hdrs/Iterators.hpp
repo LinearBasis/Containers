@@ -18,12 +18,7 @@ struct iterator
 };
 
 
-// vector
 
-// typedef RandomAccessIteratorTag<T, const_pointer, const_reference>
-
-
-// template <class T, class trais = IteratorTraits<T*> >
 template <class T, class P = T*, class R = T&, class diff = ptrdiff_t>
 class RandomAccessIterator : public iterator<T, RandomAccessIteratorTag>
 {
@@ -166,7 +161,7 @@ public:
 
 	difference_type	operator-(const RandomAccessIterator<T>& iter)
 	{
-		return (std::distance(iter, *this));
+		return (std::distance(iter._curr, this->_curr));
 	}
 
 	reference				operator[](int n)

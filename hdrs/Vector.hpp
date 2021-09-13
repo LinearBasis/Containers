@@ -117,36 +117,45 @@ public:
 	}
 	/* CONSTRUCTORS */
 
-	
-	vector()
-		:  _allocator(Alloc()), _begin(), _end(), _last(), _size(), _capacity()
-	{
-	}
-
 	explicit 
-	vector( const Alloc& alloc )
+	vector( const Alloc& alloc = Alloc() )
 		:_allocator(alloc), _begin(), _end(), _last(), _size(), _capacity()
 	{
 
 	}
 
 	explicit vector( size_t count,
-		 const T& value = T(),
-		 const Alloc& alloc = Alloc() )
-		 	: _allocator(alloc), _size(0), _capacity(0), _begin(), _end(), _last()
+		const T& value = T(),
+		const Alloc& alloc = Alloc() )
+			: _allocator(alloc), _size(0), _capacity(0), _begin(), _end(), _last()
 	{
+		std::cout << "haha" << std::endl;
 		_realloc(count);
 		for (size_t i = 0; i < count; i++)
 		{
 			std::allocator<int>	allocat;
-			// allocat.construct(this->_last, value);
 			this->_allocator.construct(this->_last, value);
 			++this->_last;
+			++this->_size;
 		}
 		this->_end = this->_last;
 		--this->_last;
 	}
 
+	template <class InputIterator>
+		vector (InputIterator first,
+			typename std::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type last,
+				const Alloc& alloc = Alloc()) 
+					: _allocator(alloc), _size(0), _capacity(0), _begin(), _end(), _last()
+		{
+			std::cout << last - first << std::endl;
+			_realloc(last - first);
+			while (first != last)
+			{
+				this->push_back(*first);
+				first++;
+			}
+		}
 
 	vector( const vector& copy )
 		:  _allocator(copy._allocator), _size(copy._size), _capacity(copy._capacity)
@@ -212,6 +221,11 @@ public:
 		this->_allocator.destruct(this->_last);
 		this->_last--;
 		this->_end--;
+	}
+
+	size_t	size() const
+	{
+		return (this->_size);
 	}
 };
 

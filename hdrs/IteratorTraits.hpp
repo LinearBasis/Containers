@@ -38,4 +38,27 @@ template <class T> struct iterator_traits<const T*>
 	typedef ErrorIteratorTag		iterator_category;
 };
 
+
+template <bool B, class T=void> struct enable_if
+{
+	typedef T type;
+};
+
+template <bool B, class T> struct enable_if<true, T>
+{
+	typedef T type;
+};
+
+template <bool B, class T> struct enable_if<false, T>
+{
+	typedef void type;
+};
+
+template <class T> struct numeric_limits
+{
+	typedef false is_integer;	
+};
+
+
+
 }

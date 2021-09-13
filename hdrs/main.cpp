@@ -66,13 +66,13 @@ void	a()
 	typename vec<int>::reverse_iterator	a = vector.rbegin();
 	while (a != vector.rend())
 	{
-		// std::cout << *a;
+		std::cout << *a;
 		a++;
 	}
-	// std::cout << "____" << std::endl;
-	// a--;
-	// std::cout << *a << std::endl;
-	// std::cout << "____" << std::endl;
+	std::cout << "____" << std::endl;
+	a--;
+	std::cout << *a << std::endl;
+	std::cout << "____" << std::endl;
 	typename vec<int>::iterator b = a.base();
 	b = a.base();
 	while (b != vector.end())
@@ -85,8 +85,14 @@ void	a()
 
 int	main()
 {
-	// third_test<ft::vector>();
-	a<ft::vector>();
-	a<std::vector>();
-	// ft::IteratorTraits<ft::Vector<int>::const_iterator>
+	ft::vector<int>		a;
+
+
+	for (int i = 0; i < 5; i++)
+		a.push_back(i);
+	ft::vector<int>		b(3, 50);
+	for (int i = 0; i < b.size(); i++)
+		std::cout << b[i] << std::endl;
+	// for (int i = 0; i < b.; i++)
+
 }
