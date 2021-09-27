@@ -3,6 +3,7 @@
 // #include <iterator>
 #include <vector>
 #include <string>
+using namespace std;
 
 template <template <typename T, class _allocator = std::allocator<T> >  class vec>
 void	iter_test(std::string filename)
@@ -36,6 +37,7 @@ void	iter_test(std::string filename)
 		std::cout << *iter << " ";
 	}
 	std::cout << std::endl;
+
 	for (typename vec<int>::const_reverse_iterator iter = tested.rbegin(); iter != tested.rend(); iter++)
 	{
 		std::cout << *iter << " ";
@@ -44,55 +46,41 @@ void	iter_test(std::string filename)
 }
 
 template <template <typename T, class _allocator = std::allocator<T> >  class vec>
-void	third_test()
+void	assign_test()
 {
-	vec<int>	tested(3, 5);
+	vec<int>	asd;
 
-	for (typename vec<int>::const_iterator iter = tested.begin(); iter != tested.end(); iter++)
+	for (int i = 0; i < 6; i++)
 	{
-		std::cout << *iter << " ";
+		asd.push_back(i);
 	}
-	std::cout << std::endl;
+	vec<int>	bef(2, 4);
+	for (int i = 0; i < bef.size(); i++)
+	{
+		cout << bef[i] << " ";
+	}
+	cout << " | ";
+	bef.assign(asd.begin() + 1, asd.end() - 1);
+	for (int i = 0; i < bef.size(); i++)
+	{
+		cout << bef[i] << " ";
+	}
+
+	cout << " | ";
+	bef.assign(7, 4);
+	for (int i = 0; i < bef.size(); i++)
+	{
+		cout << bef[i] << " ";
+	}
+	cout << endl;
 }
 
-template <template <typename T, class _allocator = std::allocator<T> >  class vec>
-void	a()
-{
-	vec<int>	vector(5);
-	for (int i = 0; i < 5; i++)
-	{
-		vector[i] = i;
-	}
-	typename vec<int>::reverse_iterator	a = vector.rbegin();
-	while (a != vector.rend())
-	{
-		std::cout << *a;
-		a++;
-	}
-	std::cout << "____" << std::endl;
-	a--;
-	std::cout << *a << std::endl;
-	std::cout << "____" << std::endl;
-	typename vec<int>::iterator b = a.base();
-	b = a.base();
-	while (b != vector.end())
-	{
-		std::cout << *b << " ";
-		b++;
-	}
-	std::cout << std::endl;
-}
+
 
 int	main()
 {
-	ft::vector<int>		a;
-
-
-	for (int i = 0; i < 5; i++)
-		a.push_back(i);
-	ft::vector<int>		b(3, 50);
-	for (int i = 0; i < b.size(); i++)
-		std::cout << b[i] << std::endl;
-	// for (int i = 0; i < b.; i++)
-
+	// iter_test<ft::vector>("asd");
+	// third_test<ft::vector>();
+	// a<ft::vector>();
+	assign_test<ft::vector>();
 }

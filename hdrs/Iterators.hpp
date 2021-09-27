@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "IteratorTraits.hpp"
+#include "utils.hpp"
 #include <stack>
 namespace ft
 {
@@ -196,7 +197,6 @@ RandomAccessIterator<T>	operator-(int n, const RandomAccessIterator<T>& iter)
 	ret -= n;
 	return (ret);
 }
-//___________________________________________________
 
 
 template <class iter>
@@ -209,9 +209,9 @@ class reverse_iterator
 private:
 	iter	_iter;
 public:
-	iter	base()
+	iter	base() const
 	{
-		iter	ans(_iter);
+		iter	ans(this->_iter);
 		ans++;
 		return (ans);
 	}
@@ -225,7 +225,11 @@ public:
 	}
 
 	template <class U>
-		reverse_iterator(const reverse_iterator<U>& copy) : _iter(copy.base())
+		reverse_iterator(const reverse_iterator<U>& copy) : _iter(--copy.base())
+	{
+	}
+
+		reverse_iterator(const iter& copy) : _iter(copy)
 	{
 	}
 
