@@ -104,35 +104,27 @@ public:
 		return (*this);
 	}
 
-	RandomAccessIterator<T>	operator--(int)
+	RandomAccessIterator	operator--(int)
 	{
-		RandomAccessIterator<T>	ret(*this);
+		RandomAccessIterator	ret(*this);
 
 		--this->_curr;
 		return (ret);
 	}
 
 	bool					operator>(const RandomAccessIterator& iter) const
-	{
-		return (this->_curr > iter._curr);
-	}
+	{ return (this->_curr > iter._curr); }
 
 	bool					operator<(const RandomAccessIterator& iter) const
-	{
-		return (this->_curr < iter._curr);
-	}
+	{ return (this->_curr < iter._curr); }
 
 	bool					operator>=(const RandomAccessIterator& iter) const
-	{
-		return (this->_curr >= iter._curr);
-	}
+	{ return (this->_curr >= iter._curr); }
 
 	bool					operator<=(const RandomAccessIterator& iter) const
-	{
-		return (this->_curr <= iter._curr);
-	}
+	{ return (this->_curr <= iter._curr); }
 
-	RandomAccessIterator<T>&	operator+=(int n)
+	RandomAccessIterator&	operator+=(int n)
 	{
 		this->_curr += n;
 		return (*this);
@@ -140,7 +132,7 @@ public:
 
 	RandomAccessIterator		operator+(int n) const
 	{
-		RandomAccessIterator<T>	ret(*this);
+		RandomAccessIterator	ret(*this);
 
 		ret += n;
 		return (ret);
@@ -154,7 +146,7 @@ public:
 
 	RandomAccessIterator	operator-(int n)
 	{
-		RandomAccessIterator<T>	ret(*this);
+		RandomAccessIterator	ret(*this);
 
 		ret -= n;
 		return (ret);
@@ -167,16 +159,16 @@ public:
 
 	reference				operator[](int n)
 	{
-		RandomAccessIterator<T>	ret(*this);
+		RandomAccessIterator	ret(*this);
 	
 		ret += n;
 		return (*ret);
 	}
 
 	friend
-	RandomAccessIterator<T>		operator+(int n, const RandomAccessIterator<T>& iter);
+		RandomAccessIterator<T>		operator+(int n, const RandomAccessIterator<T>& iter);
 	friend
-	RandomAccessIterator<T>		operator-(int n, const RandomAccessIterator<T>& iter);
+		RandomAccessIterator<T>		operator-(int n, const RandomAccessIterator<T>& iter);
 };
 
 
@@ -216,26 +208,16 @@ public:
 		return (ans);
 	}
 
-	reverse_iterator() : _iter(nullptr)
-	{
-	}
+	reverse_iterator() : _iter(nullptr) { }
 
-	reverse_iterator(pointer p) : _iter(p)
-	{
-	}
+	reverse_iterator(pointer p) : _iter(p) { }
 
 	template <class U>
-		reverse_iterator(const reverse_iterator<U>& copy) : _iter(--copy.base())
-	{
-	}
+		reverse_iterator(const reverse_iterator<U>& copy) : _iter(--copy.base()) { }
 
-		reverse_iterator(const iter& copy) : _iter(copy)
-	{
-	}
+		reverse_iterator(const iter& copy) : _iter(copy) { }
 
-	~reverse_iterator()
-	{
-	}
+	~reverse_iterator() { }
 
 	reverse_iterator&	operator=(const reverse_iterator& copy)
 	{
@@ -260,24 +242,16 @@ public:
 	}
 
 	reference	operator*() const
-	{
-		return (*(this->_iter));
-	}
+	{ return (*(this->_iter)); }
 
 	bool					operator==(const reverse_iterator& right) const
-	{
-		return (this->_iter == right._iter);
-	}
+	{ return (this->_iter == right._iter); }
 
 	bool					operator!=(const reverse_iterator& right) const
-	{
-		return (this->_iter != right._iter);
-	}
+	{ return (this->_iter != right._iter); }
 
 	pointer					operator->()
-	{
-		return (this->_iter->_curr);
-	}
+	{ return (this->_iter->_curr); }
 
 	reverse_iterator&	operator--(void)
 	{
@@ -294,24 +268,16 @@ public:
 	}
 
 	bool					operator>(const reverse_iterator& right) const
-	{
-		return (this->_iter > right._iter);
-	}
+	{ return (this->_iter < right._iter); }
 
 	bool					operator<(const reverse_iterator& right) const
-	{
-		return (this->_iter < right._iter);
-	}
+	{ return (this->_iter > right._iter); }
 
 	bool					operator>=(const reverse_iterator& right) const
-	{
-		return (this->_iter >= right._iter);
-	}
+	{ return (this->_iter <= right._iter); }
 
 	bool					operator<=(const reverse_iterator& right) const
-	{
-		return (this->_iter <= right._iter);
-	}
+	{ return (this->_iter >= right._iter); }
 
 	reverse_iterator&	operator+=(int n)
 	{
@@ -342,9 +308,7 @@ public:
 	}
 
 	difference_type	operator-(const reverse_iterator& right)
-	{
-		return (std::distance(right._iter, this->iter));
-	}
+	{ return (std::distance(right._iter, this->iter)); }
 
 	reference				operator[](int n)
 	{
@@ -355,9 +319,9 @@ public:
 	}
 
 	friend
-	reverse_iterator		operator+(int n, const reverse_iterator& right);
+		reverse_iterator		operator+(int n, const reverse_iterator& right);
 	friend
-	reverse_iterator		operator-(int n, const reverse_iterator& right);
+		reverse_iterator		operator-(int n, const reverse_iterator& right);
 };
 
 
@@ -378,6 +342,5 @@ reverse_iterator<T>	operator-(int n, const reverse_iterator<T>& right)
 	ret -= n;
 	return (ret);
 }
-
 
 }

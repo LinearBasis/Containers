@@ -3,6 +3,28 @@
 
 namespace ft
 {
+
+
+template <class T>
+void	swap(T &a, T &b)
+{
+	T	x = a;
+	a = b;
+	b = x;
+}
+
+template <class InputIterator>
+ptrdiff_t	distance(InputIterator begin, InputIterator end)
+{
+	ptrdiff_t	counter = 0;
+	while (begin != end)
+	{
+		begin++;
+		counter++;
+	}
+	return (counter);
+}
+
 template <bool B, class T=void> struct enable_if
 {
 	typedef T type;
