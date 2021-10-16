@@ -9,12 +9,12 @@ using namespace std;
 
 int		main()
 {
-	RBTree<int>	tree;
+	red_black_tree<int>	tree;
 
 	tree.add(13);
-	// tree.add(25);
-	// tree.add(2);
-	// tree.add(3);
+	tree.add(25);
+	tree.add(2);
+	tree.add(3);
 	// tree.add(1);
 	// tree.add(2);
 

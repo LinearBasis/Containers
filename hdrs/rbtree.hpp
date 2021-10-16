@@ -72,7 +72,7 @@ public:
 		}
 
 
-		static Colors	color(red_black_node* node)
+		static Colors	color(const red_black_node* node)
 		{
 			if (!node)
 				return (BLACK);
@@ -95,15 +95,16 @@ public:
 			else
 				std::cout << BLACK_NODE;
 			if (red_black_node::is_node(node))
-				std::cout << node->_data << CLEAR_COLOR;
+				std::cout << node->_data << CLEAR_COLOR << std::endl;
 			else
 				std::cout << "(null)" << CLEAR_COLOR << std::endl;
 			// if (red_black_node::is_node(node))
 				// printf(" %p %p\n", node, node->prev);
 			if (red_black_node::is_node(node))
+			{
 				red_black_node::print_node(node->left, level + 1);
-			if (red_black_node::is_node(node))
 				red_black_node::print_node(node->right, level + 1);
+			}
 		}
 
 		
@@ -238,6 +239,8 @@ private:
 		return (true);
 	}
 
+
+	//		changing levels of node and node->right
 	void	left_rotation(node_type *node)
 	{
 		node_type	*n_parent = node->right;
@@ -252,7 +255,6 @@ private:
 		node->right = n_parent->left;
 		if (node_type::is_node(n_parent->left))
 			n_parent->left->prev = node;
-
 		n_parent->left = node;
 	}
 
@@ -277,7 +279,7 @@ private:
 		Colors	temp;
 
 		temp = u->_color;
-		u->_color = v->_color
+		u->_color = v->_color;
 		v->_color = temp;
 	}
 
@@ -303,7 +305,7 @@ public:
 		std::cout << "is rbtree - " << std::boolalpha << this->is_red_black_tree() << std::endl;
 	}
 	
-	node_type*	naiveAdd(node_type* addedNode)
+	node_type*	naive_add(node_type* addedNode)
 	{
 		node_type*	begin = this->_node;
 		
@@ -311,14 +313,13 @@ public:
 		{
 			this->_node = addedNode; 
 			this->_node->_color = BLACK;
-			this->_root->prev = this->_node;
-			this->_node->prev = this->_root;
+			_update_root();
 			return (begin);
 		}
 
 		while (node_type::is_node(begin))
 		{
-			if (this->less(addedNode->_data, begin->_data))
+			if ()
 			{
 				if (node_type::is_node(begin->right))
 					begin = begin->right;
@@ -329,7 +330,7 @@ public:
 					break;
 				}
 			}
-			else if (this->less(begin->_data, addedNode->_data))
+			else if (this->less(addedNode->_data, begin->_data))
 			{
 				if (node_type::is_node(begin->left))
 					begin = begin->left;
@@ -351,24 +352,149 @@ public:
 	}
 
 
+	Colors	color_of_node(node_type *node)
+	{
+		if (node_type::is_node(node))
+			return (node_type::color(node));
+		return (BLACK);
+	}
+
+private:
+	//		case1 = red uncle, red parent and red added
+	//		checking becomes from granddad of added ode
+	bool	_check_case1(node_type	*grandparent_of_added)
+	{
+		if (!node_type::is_node(grandparent_of_added) ||
+			!node_type::is_node(grandparent_of_added->left) ||
+			!node_type::is_node(grandparent_of_added->right))
+			return (false);
+		std::cout << "ha" << std::endl;
+		if (color_of_node(grandparent_of_added) == BLACK &&
+			color_of_node(grandparent_of_added->left) == RED &&
+			color_of_node(grandparent_of_added->right) == RED &&
+				(color_of_node(grandparent_of_added->left->left) == RED ||
+				color_of_node(grandparent_of_added->right->right) == RED ||
+				color_of_node(grandparent_of_added->left->right) == RED ||
+				color_of_node(grandparent_of_added->right->left) == RED
+				) )
+		{
+			grandparent_of_added->_color = RED;
+			grandparent_of_added->_color = BLACK;
+			grandparent_of_added->_color = BLACK;
+			if (grandparent_of_added == this->_node)
+				grandparent_of_added->_color = BLACK;
+			return (true);
+		}
+		return (false);
+	}
+	
+	//		case2 = black uncle, father and dad from different sides
+	//		checking becomes from granddad of added ode
+	bool	_check_case2(node_type	*grandparent_of_added)
+	{
+		if (node_type::is_node(grandparent_of_added) &&
+			node_type::is_node(grandparent_of_added->right))
+		{
+			if (color_of_node(grandparent_of_added) == BLACK &&
+				color_of_node(grandparent_of_added->left) == BLACK &&
+				color_of_node(grandparent_of_added->right) == RED &&
+				color_of_node(grandparent_of_added->right->left) == RED)
+			this->right_rotation(grandparent_of_added->right);
+			return (true);
+		}
+		else if (node_type::is_node(grandparent_of_added) &&
+			node_type::is_node(grandparent_of_added->left))
+		{
+			if (color_of_node(grandparent_of_added) == BLACK &&
+				color_of_node(grandparent_of_added->right) == BLACK &&
+				color_of_node(grandparent_of_added->left) == RED &&
+				color_of_node(grandparent_of_added->left->right) == RED)
+			this->left_rotation(grandparent_of_added->left);
+			return (true);
+		}
+	}
+
+
+	//		case3 = black uncle, father and dad on the same side
+	bool	_check_case3(node_type	*grandparent_of_added)
+	{
+		if (node_type::is_node(grandparent_of_added)  &&
+			node_type::is_node(grandparent_of_added->left))
+		{
+			if (color_of_node(grandparent_of_added)				== BLACK	&&
+				color_of_node(grandparent_of_added->right)		== BLACK	&&
+				color_of_node(grandparent_of_added->left)		== RED		&&
+				color_of_node(grandparent_of_added->left->left) == RED)
+			{
+				right_rotation(grandparent_of_added);
+				grandparent_of_added = grandparent_of_added->prev;
+				if (node_type::is_node(grandparent_of_added))
+				{
+					grandparent_of_added->_color = BLACK;
+					if (grandparent_of_added->right)
+						grandparent_of_added->right->_color = RED;
+					if (grandparent_of_added->left)
+						grandparent_of_added->left->_color = RED;
+				}
+				_check_case1(grandparent_of_added);
+				return (true);
+			}
+		}
+		if (node_type::is_node(grandparent_of_added)  &&
+			node_type::is_node(grandparent_of_added->right))
+		{
+			if (color_of_node(grandparent_of_added)				== BLACK	&&
+				color_of_node(grandparent_of_added->left)		== BLACK	&&
+				color_of_node(grandparent_of_added->right)		== RED		&&
+				color_of_node(grandparent_of_added->right->right) == RED)
+			{
+				left_rotation(grandparent_of_added);
+				grandparent_of_added = grandparent_of_added->prev;
+				if (node_type::is_node(grandparent_of_added))
+				{
+					if (grandparent_of_added->right)
+						grandparent_of_added->right->_color = RED;
+					if (grandparent_of_added->left)
+						grandparent_of_added->left->_color = RED;
+				}
+				_check_case1(grandparent_of_added);
+				return (true);
+			}
+		}
+	}
+	
+	bool	_check_cases(node_type	*parent_of_added)
+	{
+		bool	a, b, c;
+		std::cout << "DEBUG IM HERE" << std::endl;
+		a = this->_check_case1(parent_of_added->prev);
+		b = this->_check_case2(parent_of_added->prev);
+		c = this->_check_case3(parent_of_added->prev);
+
+		std::cout << "DEBUG END CHECKING" << std::endl;
+		if (a || b || c)
+			_check_cases(parent_of_added->prev);
+	}
+public:
+
 	//	TODO функция должна возвращать итератор
 	void	add(const_reference data)
 	{
 		node_type*	addedNode = new node_type(data, RED);
 
-		node_type*	parentOfAddedNode = naiveAdd(addedNode);
+		node_type*	parentOfAddedNode = naive_add(addedNode);
+
+		std::cout << "is node - " << node_type::is_node(parentOfAddedNode) << std::endl;
+		std::cout << "is node - " << node_type::is_node(this->_root) << std::endl;
 
 		if (parentOfAddedNode == addedNode)
 			return ;		//исправить тут
+		if (parentOfAddedNode == this->_node)
+		
 
-
-
-
-		// тут отбалансировать
-
-
-
-
+		this->_check_cases(parentOfAddedNode);
+		
+		this->_size++;
 
 		node_type	*left = this->_node->get_far_left();
 		left->left = this->_root;
