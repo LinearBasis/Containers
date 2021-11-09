@@ -27,30 +27,10 @@ template <class T, class Compare = ft::less<T>, class Alloc = std::allocator<T> 
 class	red_black_tree
 {
 public:
-	typedef typename Alloc::value_type
-		value_type;
-	typedef	Alloc
-		allocator_type;
-
-	typedef typename Alloc::reference 		
-		reference;
-	typedef typename Alloc::const_reference	
-		const_reference;
-
-	typedef typename Alloc::pointer 		
-		pointer;
-	typedef typename Alloc::const_pointer	
-		const_pointer;
-
-	// typedef	typename ft::iterator_traits<iterator>::difference_type
-		// difference_type;
-	typedef typename Alloc::size_type
-		size_type;
-
-
 
 	class red_black_node
 	{
+		typedef T value_type;
 		friend class red_black_tree;
 	// private:
 	public:
@@ -181,20 +161,46 @@ public:
 		}
 	};
 
+	typedef typename Alloc::value_type
+		value_type;
+	typedef	Alloc
+		allocator_type;
+
+	typedef typename Alloc::reference 		
+		reference;
+	typedef typename Alloc::const_reference	
+		const_reference;
+
+	typedef typename Alloc::pointer 		
+		pointer;
+	typedef typename Alloc::const_pointer	
+		const_pointer;
+
+	// typedef	typename ft::iterator_traits<iterator>::difference_type
+		// difference_type;
+	typedef typename Alloc::size_type
+		size_type;
+
+	typedef typename Alloc::template rebind<red_black_node>::other allocator_node_type;
+
 	typedef red_black_node	node_type;
 
 public:
-	Alloc		_allocator;
-	Compare		_comparator;
-	size_type	_size;
+	allocator_type		_allocator;
+	allocator_node_type	_allocator_node;
+	Compare				_comparator;
+	size_type			_size;
 	red_black_node		*_root;
-	node_type	*_node;
+	node_type			*_node;
 
 private:
 
-	node_type	*new_node(const T& value)
+	node_type	*new_node(const T& value, Colors color = RED)
 	{
-		node_type	*node = this->_allocator.allocate();
+		node_type	*node = this->_allocator_node.allocate(1);
+
+		this->_allocator_node.construct(node, node_type(value, color));
+		return (node);
 	}
 
 	void	_update_root()
@@ -309,9 +315,6 @@ public:
 		if (node_type::is_node(new_left_node_of_old_parent))
 			new_parent->right->left->prev = new_parent->right;
 		new_parent->right->prev = new_parent;
-
-		// this->_root->left = this->_node->get_far_left();
-		// this->_root->right = this->_node->get_far_right();
 	}
 
 	void	swap_colors(node_type *u, node_type *v)
@@ -335,14 +338,15 @@ public:
 
 public:
 	red_black_tree()
-		: _allocator(Alloc()), _size(0), _root(new node_type(value_type(), RED)), _node(nullptr), _comparator(Compare())
+		: _allocator(Alloc()), _size(0), _root(new_node(value_type(), RED)), _node(nullptr), _comparator(Compare())
 	{ }
 
 	void	print()
 	{
 		if (this->_node)
 			node_type::print_node (this->_node);
-		std::cout << "is rbtree - " << std::boolalpha << this->is_red_black_tree() << std::noboolalpha << std::endl;
+		std::cout << "is rbtree - " << std::boolalpha;
+		std::cout << this->is_red_black_tree() << std::noboolalpha << std::endl;
 	}
 	
 	node_type*	naive_add(node_type* addedNode)
@@ -520,7 +524,7 @@ public:
 	//	TODO функция должна возвращать итератор
 	void	add(const_reference data)
 	{
-		node_type*	addedNode = new node_type(data, RED);
+		node_type*	addedNode = new_node(data, RED);
 
 		node_type*	parentOfAddedNode = naive_add(addedNode);
 
@@ -541,4 +545,13 @@ public:
 		this->_root->right = right;
 	}
 
+	void	clear()
+	{
+		
+	}
+
+	~red_black_tree()
+	{
+
+	}
 };
