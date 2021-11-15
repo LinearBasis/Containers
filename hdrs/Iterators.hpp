@@ -60,9 +60,7 @@ public:
 	}
 
 	operator RandomAccessIterator<T, const T*, const T&>()
-	{
-		return RandomAccessIterator<T, const T*, const T&>(_curr);
-	}
+	{ return RandomAccessIterator<T, const T*, const T&>(_curr); }
 
 	RandomAccessIterator&	operator++(void)
 	{
@@ -79,9 +77,7 @@ public:
 	}
 
 	reference	operator*() const
-	{
-		return (*(this->_curr));
-	}
+	{ return (*(this->_curr)); }
 
 	bool					operator==(const RandomAccessIterator& iter) const
 	{
@@ -244,11 +240,11 @@ public:
 	reference	operator*() const
 	{ return (*(this->_iter)); }
 
-	bool					operator==(const reverse_iterator& right) const
-	{ return (this->_iter == right._iter); }
+	friend bool	operator==(const reverse_iterator& left, const reverse_iterator& right)
+	{ return (left._iter == right._iter); }
 
-	bool					operator!=(const reverse_iterator& right) const
-	{ return (this->_iter != right._iter); }
+	friend bool	operator!=(const reverse_iterator& left, const reverse_iterator& right)
+	{ return (left._iter != right._iter); }
 
 	pointer					operator->()
 	{ return (this->_iter->_curr); }
@@ -344,3 +340,4 @@ reverse_iterator<T>	operator-(int n, const reverse_iterator<T>& right)
 }
 
 }
+
