@@ -26,13 +26,14 @@ int		main()
 	}
 	iter--;
 	std::cout << "_________" << std::endl;
-	while (true)
+
+	red_black_tree<int>::const_reverse_iterator	iter2 = tree.rbegin();
+	for (; tree.rend() != iter2; iter2++)
 	{
-		std::cout << *iter << std::endl;
-		if (iter == tree.begin())
-		{
-			break ;
-		}
-		iter--;
+		std::cout << *iter2 << std::endl;
 	}
+	
+	// std::cout << *iter2 << std::endl;
+	// std::cout <<  *tree.rend() << std::endl;
+	// std::cout << (tree.rend() == iter2) << std::endl;
 }

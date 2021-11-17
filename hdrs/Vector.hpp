@@ -105,7 +105,7 @@ public:
 	}
 	reverse_iterator	rend()
 	{
-		return (this->_begin - 1);
+		return (--this->begin());
 	}
 	const_reverse_iterator	rbegin()	const
 	{
@@ -113,7 +113,7 @@ public:
 	}
 	const_reverse_iterator	rend()		const
 	{
-		return (this->_begin - 1);
+		return (--this->begin());
 	}
 
 	reference		operator[](size_type index)

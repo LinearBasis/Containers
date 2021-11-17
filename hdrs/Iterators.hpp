@@ -21,7 +21,7 @@ struct iterator
 
 
 template <class T, class P = T*, class R = T&, class diff = ptrdiff_t>
-class RandomAccessIterator : public iterator<T, RandomAccessIteratorTag>
+class RandomAccessIterator : public iterator<T, RandomAccessIteratorTag, P, R, diff>
 {
 public:
 	typedef P pointer;
@@ -79,14 +79,14 @@ public:
 	reference	operator*() const
 	{ return (*(this->_curr)); }
 
-	bool					operator==(const RandomAccessIterator& iter) const
+	friend bool	operator==(const RandomAccessIterator& left, const RandomAccessIterator& right)
 	{
-		return (this->_curr == iter._curr);
+		return (left._curr == right._curr);
 	}
 
-	bool					operator!=(const RandomAccessIterator& iter) const
+	friend bool	operator!=(const RandomAccessIterator& left, const RandomAccessIterator& right)
 	{
-		return (this->_curr != iter._curr);
+		return (left._curr != right._curr);
 	}
 
 	pointer					operator->()
@@ -206,12 +206,10 @@ public:
 
 	reverse_iterator() : _iter(nullptr) { }
 
-	reverse_iterator(pointer p) : _iter(p) { }
-
 	template <class U>
 		reverse_iterator(const reverse_iterator<U>& copy) : _iter(--copy.base()) { }
 
-		reverse_iterator(const iter& copy) : _iter(copy) { }
+	reverse_iterator(const iter& p) : _iter(p) { }
 
 	~reverse_iterator() { }
 
@@ -240,11 +238,13 @@ public:
 	reference	operator*() const
 	{ return (*(this->_iter)); }
 
-	friend bool	operator==(const reverse_iterator& left, const reverse_iterator& right)
-	{ return (left._iter == right._iter); }
+	template< class iter1, class iter2 >
+	friend bool	operator==(const reverse_iterator<iter1>& left, const reverse_iterator<iter2>& right)
+	{ return (left.base() == right.base()); }
 
-	friend bool	operator!=(const reverse_iterator& left, const reverse_iterator& right)
-	{ return (left._iter != right._iter); }
+	template< class iter1, class iter2 >
+	friend bool	operator!=(const reverse_iterator<iter1>& left, const reverse_iterator<iter2>& right)
+	{ return (left.base() != right.base()); }
 
 	pointer					operator->()
 	{ return (this->_iter->_curr); }
@@ -340,4 +340,3 @@ reverse_iterator<T>	operator-(int n, const reverse_iterator<T>& right)
 }
 
 }
-

@@ -6,20 +6,20 @@
 namespace ft
 {
 
-template <class T, class P, class R, class diff>
-class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIteratorTag>
+template <class T, class P, class R, class diff >
+class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIteratorTag, P, R, diff>
 	{
 	public:
 		typedef typename red_black_tree<T>::red_black_node	red_black_node;
-		typedef red_black_node* pointer;
-		typedef red_black_node& reference;
+		typedef P pointer;
+		typedef R reference;
 		typedef diff difference_type;
 	private:
-		pointer _curr;
+		red_black_node* _curr;
 	public:
 		red_black_tree_iterator()
 		{ this->_curr = nullptr; }
-		red_black_tree_iterator(pointer p)
+		red_black_tree_iterator(red_black_node* p)
 		{ this->_curr = p; }
 		
 		red_black_tree_iterator(const red_black_tree_iterator<T, P, R, diff>& copy)
@@ -36,11 +36,11 @@ class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIterator
 
 		red_black_tree_iterator&	operator++(void)
 		{
-			// if (!this->_curr->prev)
-			// {
-			// 	this->_curr = this->_curr->left;
-			// }
-			if (this->_curr->right)
+			if (!this->_curr->prev)
+			{
+				this->_curr = this->_curr->left;
+			}
+			else if (this->_curr->right)
 			{
 				this->_curr = this->_curr->right;
 				this->_curr = this->_curr->get_far_left();
@@ -65,17 +65,17 @@ class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIterator
 			return (iter);
 		}
 
-		T&		operator*() const
+		reference		operator*() const
 		{ return (this->_curr->_data); }
 
-		bool	operator==(const red_black_tree_iterator& iter) const
-		{ return (this->_curr == iter._curr); }
+		friend bool	operator==(const red_black_tree_iterator& left, const red_black_tree_iterator& right)
+		{ return (left._curr == right._curr); }
 
-		bool	operator!=(const red_black_tree_iterator& iter) const
-		{ return (this->_curr != iter._curr); }
+		friend bool	operator!=(const red_black_tree_iterator& left, const red_black_tree_iterator& right)
+		{ return (left._curr != right._curr); }
 
 		
-		T*		operator->()
+		pointer			operator->() const
 		{ return (&(this->_curr->data)); }
 		
 		red_black_tree_iterator&	operator--(void)
@@ -84,7 +84,7 @@ class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIterator
 			{
 				this->_curr = this->_curr->right;
 			}
-			else if (this->_curr->left)
+			else if (this->_curr->left)	
 			{
 				this->_curr = this->_curr->left;
 				this->_curr = this->_curr->get_far_right();
@@ -105,6 +105,8 @@ class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIterator
 
 			--(*this);
 			return (iter);
+
 		}
 	};
+
 }

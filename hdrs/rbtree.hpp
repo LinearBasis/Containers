@@ -29,6 +29,8 @@ namespace ft
 {
 template <class T, class P = T*, class R = T&, class diff = ptrdiff_t>
 	class	red_black_tree_iterator;
+template <class iter>
+	class reverse_iterator_rbtree;
 }
 
 template <class Iter> class reverse_iterator_rbtree;
@@ -57,9 +59,7 @@ public:
 			: _data(data), _color(color), prev(prev), left(left), right(right) {}
 		
 		bool	operator!() const
-		{
-			return (!this->prev);
-		}
+		{ return (!this->prev); }
 
 		static Colors	color(const red_black_node* node)
 		{
@@ -175,6 +175,10 @@ public:
 	typedef typename ft::red_black_tree_iterator<value_type, const_pointer, const_reference>
 		const_iterator;
 
+	typedef typename ft::reverse_iterator<iterator>
+		reverse_iterator;
+	typedef typename ft::reverse_iterator<const_iterator>
+		const_reverse_iterator;
 
 
 public:
@@ -196,6 +200,26 @@ public:
 	const_iterator	end() const
 	{
 		return (this->_head);
+	}
+
+	reverse_iterator		rbegin()
+	{
+		return (iterator(this->_head->right));
+	}
+
+	const_reverse_iterator	rbegin() const
+	{
+		return (const_iterator(this->_head->right));
+	}
+
+	reverse_iterator		rend()
+	{
+		return (iterator(this->_head));
+	}
+
+	const_reverse_iterator	rend() const
+	{
+		return (const_iterator(this->_head));
 	}
 
 public:
