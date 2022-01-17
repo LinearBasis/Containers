@@ -415,7 +415,9 @@ public:
 			}
 			else
 			{
-				begin->_data = addedNode->_data;
+				// begin->_data = addedNode->_data;
+				// swap_nodes(begin, addedNode);
+				begin = begin->prev;
 				break;
 			}
 		}

@@ -11,6 +11,7 @@ class red_black_tree_iterator : public ft::iterator<T, ft::BidirectionalIterator
 	{
 	public:
 		typedef typename red_black_tree<T>::red_black_node	red_black_node;
+		typedef T value_type;
 		typedef P pointer;
 		typedef R reference;
 		typedef diff difference_type;
