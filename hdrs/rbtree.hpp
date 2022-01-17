@@ -426,6 +426,7 @@ public:
 				{
 					begin->right = addedNode;
 					addedNode->prev = begin;
+					begin = begin->right;
 					break;
 				}
 			}
@@ -437,16 +438,12 @@ public:
 				{
 					begin->left = addedNode;
 					addedNode->prev = begin;
+					begin = begin->left;
 					break;
 				}
 			}
 			else
-			{
-				// begin->_data = addedNode->_data;
-				// swap_nodes(begin, addedNode);
-				begin = begin->prev;
 				break;
-			}
 		}
 		return (begin);
 	}
