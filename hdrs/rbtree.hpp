@@ -373,6 +373,33 @@ public:
 		std::cout << "is rbtree - " << std::boolalpha;
 		std::cout << this->is_red_black_tree() << std::noboolalpha << std::endl;
 	}
+
+	node_type*	find(const_reference data)
+	{
+		node_type *begin = this->_root;
+		while (begin)
+		{
+			if (this->less(begin->_data, data))
+			{
+				if (begin->right)
+					begin = begin->right;
+				else
+					return (nullptr);
+			}
+			else if (this->less(data, begin->_data))
+			{
+				if (begin->left)
+					begin = begin->left;
+				else
+					return (nullptr);
+			}
+			else
+			{
+				return (begin);
+			}
+		}
+		return (nullptr);
+	}
 	
 	node_type*	naive_add(node_type* addedNode)
 	{
@@ -387,7 +414,7 @@ public:
 			this->_head->left = this->_root;
 			this->_head->right = this->_root;
 
-			return (this->_head);
+			return (this->_root);
 		}
 		while (begin)
 		{
@@ -556,26 +583,26 @@ public:
 public:
 
 	//	TODO функция должна возвращать итератор
-	void	add(const_reference data)
+	node_type*	add(const_reference data)
 	{
+		node_type*	find_node = find(data);
+		if (find_node)
+			return find_node;
+		this->_size++;
 		node_type*	addedNode = new_node(data, RED);
-		node_type*	parentOfAddedNode = naive_add(addedNode);
+		node_type*	addedNodeAftedAdd = naive_add(addedNode);
 
-		if (parentOfAddedNode == addedNode || parentOfAddedNode == this->_head)
-		{
-			return ;		//исправить тут
-		}
+		if (addedNodeAftedAdd == this->_root)
+			return (addedNodeAftedAdd);
+		node_type*	parentOfAddedNode = addedNodeAftedAdd->prev;
 
 		this->_check_cases(parentOfAddedNode);
 
-		this->_size++;
 		this->_root->_color = BLACK;
-
-		node_type	*left = this->_root->get_far_left();
-		this->_head->left = left;
-
-		node_type	*right = this->_root->get_far_right();
-		this->_head->right = right;
+		this->_head->left = this->_root->get_far_left();;
+		this->_head->right = this->_root->get_far_right();;
+		
+		return (addedNodeAftedAdd);
 	}
 
 	void	clear()

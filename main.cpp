@@ -41,6 +41,7 @@ int		main()
 		std::cout << *iter2 << std::endl;
 	}
 	
+	std::cout << "metadata print: \n";
 	std::cout << *iter2 << std::endl;
 	std::cout <<  *tree.rend() << std::endl;
 	std::cout << (tree.rend() == iter2) << std::endl;
