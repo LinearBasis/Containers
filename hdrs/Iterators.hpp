@@ -221,7 +221,7 @@ public:
 
 	template<class U>
 	reverse_iterator( const reverse_iterator<U>& other)
-		: _iter(other.base())
+		: _iter(++other.base())
 	{}
 
 	~reverse_iterator( void )
@@ -235,7 +235,7 @@ public:
 	}
 
 	/* Base */
-	iterator_type   base() const    { return this->_iter; }
+	iterator_type   base() const    { return --iterator_type(this->_iter); }
 
 	/* Data access */
 	reference       operator*(void)         { return *(this->_iter); }
