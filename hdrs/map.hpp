@@ -135,16 +135,16 @@ public:
 		const_iterator end() const
 		{ return tree.end(); }
 
-		iterator rbegin()
+		reverse_iterator rbegin()
 		{ return tree.rbegin(); }
 
-		const_iterator rbegin() const
+		const_reverse_iterator rbegin() const
 		{ return tree.rbegin(); }
 
-		iterator rend()
+		reverse_iterator rend()
 		{ return tree.rend(); }
 
-		const_iterator rend() const
+		const_reverse_iterator rend() const
 		{ return tree.rend(); }
 
 
@@ -177,7 +177,13 @@ public:
 		size_type erase (const key_type& k)
 		{ return tree.erase(k); }
      	void erase (iterator first, iterator last)
-		{ tree.erase(first, last); }
+		{
+			while (first != last)
+			{
+				tree.erase(*first);
+				first++;
+			}
+		}
 
 
 

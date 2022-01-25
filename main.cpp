@@ -6,7 +6,7 @@
 #include <time.h>
 #include "hdrs/map.hpp"
 #include "hdrs/stack.hpp"
-
+#include "hdrs/set.hpp"
 #include "hdrs/rbtree.hpp"
 #include "hdrs/vector.hpp"
 // #include "hdrs/rbiter.hpp"
@@ -32,6 +32,25 @@ bool	equal(std::map<int, const int> m1, ft::map<int, const int> m2)
 }
 
 
+void	set_test()
+{
+	ft::set<int>	x;
+	for (int i = 0; i < 100; i++)
+	{
+		x.insert(rand() % 10);
+	}
+
+	x.erase(x.find(5), x.find(8));
+
+	auto i = x.rbegin();
+
+	while (i != x.rend())
+	{
+		std::cout << *i << " ";
+		i++;
+	}
+	std::cout << "if unique and without 5-8 then okay\n";
+}
 
 void	map_test()
 {
@@ -136,6 +155,7 @@ void	stack_test()
 
 int		main()
 {
+	set_test();
 	// map_test();
 	// stack_test();
 	// srand(1642617733);
