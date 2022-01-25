@@ -210,7 +210,6 @@ public:
 		typename ft::iterator_traits<Iterator>::reference
 		reference;
 
-	/* Constructors and destructor */
 	reverse_iterator( void )
 		: _iter()
 	{}
@@ -227,17 +226,14 @@ public:
 	~reverse_iterator( void )
 	{}
 
-	/* Assignment overload */
 	template<class U>
 	reverse_iterator&   operator=( const reverse_iterator<U>& other)
 	{
 		this->_iter = other.iter;
 	}
 
-	/* Base */
 	iterator_type   base() const    { return --iterator_type(this->_iter); }
 
-	/* Data access */
 	reference       operator*(void)         { return *(this->_iter); }
 	const reference operator*(void) const   { return *(this->_iter); }
 	
@@ -249,7 +245,6 @@ public:
 	const reference operator[](const difference_type& m) const
 	{ return this->_iter[-m - 1]; }
 
-	/* Arifmetics operators */
 	reverse_iterator& operator++(void)
 	{
 		--this->_iter;
@@ -303,12 +298,6 @@ private:
 
 };
 
-/* compares overloads
-	
-	each compare has two overloads for <T> and <T, U>
-	for compare <T, const T>.
-*/
-// ==
 template<typename T>
 bool    operator==(const reverse_iterator<T>& first,
 					const reverse_iterator<T>& second)
@@ -323,7 +312,6 @@ bool    operator==(const reverse_iterator<T>& first,
 	return (first.base() == second.base());
 }
 
-// !=
 template<typename T>
 bool    operator!=(const reverse_iterator<T>& first,
 					const reverse_iterator<T>& second)
@@ -338,7 +326,6 @@ bool    operator!=(const reverse_iterator<T>& first,
 	return (first.base() != second.base());
 }
 
-// >=
 template<typename T>
 bool    operator>=(const reverse_iterator<T>& first,
 					const reverse_iterator<T>& second)
@@ -353,7 +340,6 @@ bool    operator>=(const reverse_iterator<T>& first,
 	return (first.base() <= second.base());
 }
 
-// <=
 template<typename T>
 bool    operator<=(const reverse_iterator<T>& first,
 					const reverse_iterator<T>& second)
@@ -368,7 +354,6 @@ bool    operator<=(const reverse_iterator<T>& first,
 	return (first.base() >= second.base());
 }
 
-// >
 template<typename T>
 bool    operator>(const reverse_iterator<T>& first,
 					const reverse_iterator<T>& second)
@@ -383,7 +368,6 @@ bool    operator>(const reverse_iterator<T>& first,
 	return (first.base() < second.base());
 }
 
-// <
 template<typename T>
 bool    operator<(const reverse_iterator<T>& first,
 					const reverse_iterator<T>& second)
@@ -398,7 +382,6 @@ bool    operator<(const reverse_iterator<T>& first,
 	return (first.base() > second.base());
 }
 
-/* non-member afirmetic functions */
 template<typename T>
 reverse_iterator<T> operator+(
 	const typename reverse_iterator<T>::difference_type& m,
