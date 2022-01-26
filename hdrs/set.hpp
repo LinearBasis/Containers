@@ -39,7 +39,8 @@ public:
     typedef typename tree_type::size_type          size_type;
     typedef typename tree_type::difference_type    difference_type;
 
-private:
+// private:
+public:
 	tree_type	tree;
 
 public:
@@ -115,8 +116,7 @@ public:
 		{
 			while (first != last)
 			{
-				tree.erase(*first);
-				first++;
+				tree.erase(first++);
 			}
 		}
 

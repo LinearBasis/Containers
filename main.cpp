@@ -36,20 +36,19 @@ void	set_test()
 {
 	ft::set<int>	x;
 	for (int i = 0; i < 100; i++)
-	{
 		x.insert(rand() % 10);
-	}
 
 	x.erase(x.find(5), x.find(8));
 
-	auto i = x.rbegin();
-
-	while (i != x.rend())
+	auto i = x.begin();
+	int d = 0;
+	while (i != x.end() && d < 100)
 	{
 		std::cout << *i << " ";
 		i++;
+		d++;
 	}
-	std::cout << "if unique and without 5-8 then okay\n";
+	std::cout << "set - if unique and without 5-8 then okay\n";
 }
 
 void	map_test()
@@ -75,7 +74,7 @@ void	map_test()
 
 		if (equal(m1, m2))
 		{
-			std::cout << "ERROR while add rand nums to 1, before to 2" << std::endl;
+			std::cout << "map - error" << std::endl;
 			return ;
 		}
 		m2.insert(ft::make_pair(x, i));
@@ -93,14 +92,8 @@ void	map_test()
 	{
 		if (numbers_to_delete[n] == 1 && m1.end() != i && m2.end() != j)
 		{
-			auto i1 = i;
-			auto j1 = j;
-			i1++;
-			j1++;
-			m1.erase(i);
-			m2.erase(j);
-			i = i1;
-			j = j1;
+			m1.erase(i++);
+			m2.erase(j++);
 		}
 		if (m1.end() != i)
 			i++;
@@ -109,17 +102,16 @@ void	map_test()
 	}
 	if (j != m2.end() || i != m1.end())
 	{
-		std::cout << "ERROR" << std::endl;
+		std::cout << "map - error" << std::endl;
 		return ;
 	}
 	if (!equal(m1, m2))
 	{
-		std::cout << "ERROR" << std::endl;
+		std::cout << "map - error" << std::endl;
 		return ;
 	}
-	std::cout << "all is okay" << std::endl;
+	std::cout << "map - good" << std::endl;
 }
-
 
 
 void	stack_test()
@@ -133,13 +125,13 @@ void	stack_test()
 		x.push(z);
 		if (x.top() != z)
 		{
-			std::cout << "ERROR" << std::endl;
+			std::cout << "stack - error" << std::endl;
 			return;
 		}
 	}
 	if (x.size() != 15)
 	{
-		std::cout << "ERROR" << std::endl;
+		std::cout << "stack - error" << std::endl;
 		return;
 	}
 	while (x.size() != 0)
@@ -147,80 +139,53 @@ void	stack_test()
 		x.pop();
 	}
 	if (x.empty())
-		std::cout << "all okay\n";
+		std::cout << "stack - good\n";
 	else
-		std::cout << "error\n";
+		std::cout << "stack - error\n";
 }
 
+void	vector_test()
+{
+	ft::vector<int>	a;
+	std::vector<int>	b;
+
+	for (int i = 0; i < 50; i++)
+	{
+		int x = rand() % 50;
+		a.push_back(x);
+		b.push_back(x);
+	}
+	auto i1 = a.begin();
+	auto i2 = b.begin();
+	for (int i = 0; i < a.size(); i++, i1++, i2++)
+	{
+		if (rand() % 50 > 35)
+		{
+			a.erase(i1);
+			b.erase(i2);
+		}
+	}
+	if (a.size() != b.size())
+	{
+		std::cout << "VECTOR ERROR\n";
+		return ;
+	}
+	for (int i = 0; i < a.size(); i++)
+	{
+		if (a[i] != b[i])
+		{
+			std::cout << "VECTOR ERROR\n";
+			return ;
+		}
+	}
+	std::cout << "vector - good\n";
+}
 
 int		main()
 {
+	srand(1642617733);
 	set_test();
-	// map_test();
-	// stack_test();
-	// srand(1642617733);
-	// ft::vector<int>	a;
-	// std::vector<int>	b;
-
-	// for (int i = 0; i < 50; i++)
-	// {
-	// 	int x = rand() % 50;
-	// 	a.push_back(x);
-	// 	b.push_back(x);
-	// }
-	// auto i1 = a.begin();
-	// auto i2 = b.begin();
-
-	// for (int i = 0; i < a.size(); i++, i1++, i2++)
-	// {
-	// 	if (rand() % 50 > 35)
-	// 	{
-	// 		a.erase(i1);
-	// 		b.erase(i2);
-	// 	}
-	// }
-
-	// if (a.size() != b.size())
-	// 	std::cout << "ERROR\n";
-	// for (int i = 0; i < a.size(); i++)
-	// {
-	// 	if (a[i] != b[i])
-	// 	{
-	// 		std::cout << "ERROR\n";
-	// 		break ;
-	// 	}
-	// }
-
-
-
-	// ft::_RB_tree<int>	a;
-
-	// // a.push(1);
-	// // a.erase(1);
-	// // a.erase(1);
-	// // a.erase(1);
-	// // a.print();
-	// time_t	time_seed = time(nullptr);
-	// std::cout << time_seed << std::endl;
-	// for (int i = 0; i < 50; i++)
-	// 	a.push(rand() % 12);
-	
-	
-
-	// vector<ft::_RB_tree<int>::iterator>	vec;
-
-	// for (auto i = a.begin(); i != a.end(); ++i)
-	// {
-	// 	if (rand() % 50 > 32)
-	// 		vec.push_back(i);
-	// }
-	// for (auto i : vec)
-	// 	a.erase(i);
-
-	// for (ft::_RB_tree<int>::const_reverse_iterator i = a.rbegin(); i != a.rend(); i++)
-	// {
-	// 	std::cout << *i << std::endl;
-	// }
-	// a.print();
-	// std::cout << "is_rbtree:" << a.is_red_black_tree() << std::endl;
+	map_test();
+	stack_test();
+	vector_test();
 }
